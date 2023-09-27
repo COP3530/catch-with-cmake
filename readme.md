@@ -115,3 +115,44 @@ I hope this helps!
 # Addendum
 The link to the Catch2 documentation for setting this up is [here](https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md). It goes into more detail, but was a bit hard for me to parse at first, which was one of the reasons I wrote this guide.
 
+# FAQ:
+
+## The provided CMakeLists.txt isn't working for me. How do I fix this?
+
+This could be for any number of reasons. In case you haven't watched it, the first part of the CLion video goes over how each part of the CMakeLists.txt file works and some common pitfalls that you might run into. Having a better conceptual understanding of the file might be enough to fix your issue. Otherwise, common issues and their fixes are below.
+
+- `Cannot specify link libraries for target "[Some target]" which is not built by this project`
+
+  This error says that CMake can't find the project you're trying to link to and usually happens on the line with `target_link_libraries`. This is most likely due to a name mismatch between the name of your testing executable (the one that includes `test-unit/test.cpp`) and the name in the parentheses for `target_link_libraries`. Check both of these and make sure the names match.
+
+- `Cannot find source file: [Some source file]`
+  
+  This is either due to you having a source file in one of your `add_executable` blocks that doesn't actually exist (or having a typo in its name/path), *or* 
+  
+  this will happen if your CMakeLists.txt is not in the root directory of your project, as the paths passed to it will not resolve properly. 
+  
+  You can fix this by renaming any problem files and/or moving CMakeLists.txt if it's in the wrong place.
+  
+- ```
+  variable 'reporterIdx' set but not used [-Werror,-Wunused-but-set-variable]
+              std::size_t reporterIdx = 0;
+                          ^
+  1 error generated.
+  ```
+
+  This error appears due to the compiler flags set in CMakeLists.txt:
+  
+  ```cmake
+  SET(GCC_COVERAGE_COMPILE_FLAGS "-WALL -WERROR")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
+  ```
+
+  Depending on your compiler, it may also throw an error and halt compilation for unused variables in *Catch itself*, not just your own code, which is where this unused variable comes from. There are a couple ways around this:
+  
+  1. Specify a newer version of Catch2 in your `FetchContent_Declare` block.
+     
+     Catch2 3.4.0 has been reported working by students who've faced this issue - this version of Catch doesn't seem to cause the [CLion bug](https://youtrack.jetbrains.com/issue/CPP-31284) that I thought I ran into when testing this method, so it should work for both IDE's. However, if you do run into that issue, try incrementally lowering the version number until it resolves.
+     
+  2. Remove the compiler flags from CMakeLists.txt.
+  
+     This will stop your compiler from treating warnings like errors, but will make it so that your local environment's build process differs from that of Gradescope. If you leave things like unused variables in your code and try uploading to Gradescope later, you may have to fix those instances before being able to see test results.
