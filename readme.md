@@ -170,9 +170,9 @@ This could be for any number of reasons. In case you haven't watched it, the fir
   
 - ```console
   error: 'something' redeclared with different access
-  457 |       struct something
-      |       ^
-ninja: build stopped: subcommand failed.
+    457 |       struct something
+        |       ^~~~~~
+  ninja: build stopped: subcommand failed.
   ```
   
   Depending on what system libraries you used in your code and what version they were, you may run into an error like this after using `#define private public` in your test.cpp. This is due to the system libraries not explicitly declaring access for class members, meaning that when `private` gets replaced with `public` in your test.cpp, there ends up being a conflict if a member is declared twice and it was implicitly defined the first time.
