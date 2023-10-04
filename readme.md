@@ -171,7 +171,7 @@ This could be for any number of reasons. In case you haven't watched it, the fir
 - ```console
   error: 'something' redeclared with different access
   457 |       struct something
-      |       ^~~~~~
+      |       ^
 ninja: build stopped: subcommand failed.
   ```
   
