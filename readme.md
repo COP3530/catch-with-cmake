@@ -162,6 +162,7 @@ This could be for any number of reasons. In case you haven't watched it, the fir
      This will stop your compiler from treating warnings like errors, but will make it so that your local environment's build process differs from that of Gradescope. If you leave things like unused variables in your code and try uploading to Gradescope later, you may have to fix those instances before being able to see test results.
 
 - `multiple definition of "someFunction()"`
+  
   If you have source files listed multiple times in the `add_executable()` blocks, you might get this error because the compiler expects only a single definition of each function/class. You can fix this by removing the duplicates.
 
 - `Test framework quit unexpectedly`
