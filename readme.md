@@ -163,3 +163,48 @@ This could be for any number of reasons. In case you haven't watched it, the fir
 
 - `multiple definition of "someFunction()"`
   If you have source files listed multiple times in the `add_executable()` blocks, you might get this error because the compiler expects only a single definition of each function/class. You can fix this by removing the duplicates.
+
+- `Test framework quit unexpectedly`
+  This is likely due to the CLion bug I mentioned in the video, where newer versions of Catch break CLion's testing setup. First try updating your CLion to see if it resolves the issue. If that doesn't work, try lowering the version of Catch2 in your CMakeLists.txt - `v3.0.1` doesn't seem to have this issue, but depending on your compiler, you may run into issues with unused variables in Catch. Depending on your environment's setup, you may have to perform other mitigations to get everything to work.
+  
+- ```console
+  error: 'something' redeclared with different access
+  457 |       struct something
+      |       ^~~~~~
+ninja: build stopped: subcommand failed.
+  ```
+  
+  Depending on what system libraries you used in your code and what version they were, you may run into an error like this after using `#define private public` in your test.cpp. This is due to the system libraries not explicitly declaring access for class members, meaning that when `private` gets replaced with `public` in your test.cpp, there ends up being a conflict if a member is declared twice and it was implicitly defined the first time.
+
+  There are a few ways to solve this:
+  1. `#include` the problem system header in your test.cpp *before* you `#define private public` - since system headers use header guards like `#pragma once`, it won't cause errors if it's included multiple times. In this way, the header will be included with the proper access modifiers, and the second `#include` affected by `#define private public` within your header file will be ignored.
+  2. Define a DEBUGGING flag in your test.cpp and then use an ifdef in your header file(s) affected by the issue so that system headers aren't impacted and the redefinition only happens when building test.cpp. It would look something like this:
+  
+     ```cpp
+     //test.cpp
+     
+     #include <catch2/catch_test_macros.hpp>
+     
+     #define DEBUGGING
+     
+     #include "MyClass.h"
+     
+     ...
+     ```
+     
+     ```cpp
+     //MyClass.h
+     
+     #include <some_stdlib_class>
+     
+     #include "MyOtherClass.h"
+     
+     #ifdef DEBUGGING
+     #define private public
+     #endif
+     
+     ...
+     ```
+     
+  3. Make the function you're trying to test public instead of private. Note that this may result in poor encapsulation points taken off if you end up doing this for a lot of internal class methods.
+     
