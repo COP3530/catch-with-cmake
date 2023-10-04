@@ -165,6 +165,7 @@ This could be for any number of reasons. In case you haven't watched it, the fir
   
   If you have source files listed multiple times in the `add_executable()` blocks, you might get this error because the compiler expects only a single definition of each function/class. You can fix this by removing the duplicates.
 
+## Other Errors
 - `Test framework quit unexpectedly`
   This is likely due to the CLion bug I mentioned in the video, where newer versions of Catch break CLion's testing setup. First try updating your CLion to see if it resolves the issue. If that doesn't work, try lowering the version of Catch2 in your CMakeLists.txt - `v3.0.1` doesn't seem to have this issue, but depending on your compiler, you may run into issues with unused variables in Catch. Depending on your environment's setup, you may have to perform other mitigations to get everything to work.
   
