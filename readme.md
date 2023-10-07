@@ -11,7 +11,6 @@ Using the included catch file works fine, but each time you change test.cpp, it 
 
 By instead using catch&rsquo;s newer cmake integration, it builds way quicker, lets you have a separate unit testing executable and main executable, and gives you access to the latest features of catch should you need them.
 
-
 <a id="orgf5c7f84"></a>
 
 # Part 1: Put your project on git/Github *now*
@@ -209,4 +208,18 @@ This could be for any number of reasons. In case you haven't watched it, the fir
      ```
      
   3. Make the function you're trying to test public instead of private. Note that this may result in poor encapsulation points taken off if you end up doing this for a lot of internal class methods.
+  
+- My tests aren't running! The tests terminate or never complete.
+  This can be for a variety of reasons. potential solutions are listed below.
+  
+  1. Update your CLion.
+  
+     Older versions of CLion have issues with Catch versions greater than v3.0.1 - if there's an update available for your editor, update it before trying anything else. [Jetbrains Toolbox](https://www.jetbrains.com/toolbox-app/) is a useful tool for keeping your editors up to date
      
+  2. Lower the version of catch2 that you're using.
+  
+     If your CLion is as recent as possible and you're still having issues, you could try lowering catch to v3.0.1 in your CMakeLists.txt file to get around CLion bugs.
+     
+  3. Make sure you're actually using your Tests run configuration!
+  
+     At the top of the CLion window is a dropdown box to select which run configuration you want to use. Make sure it's set to Tests and not Main or Project1. You can see examples of working configurations in section 3 of the written tutorial.
