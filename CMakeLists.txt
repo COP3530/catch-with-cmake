@@ -17,6 +17,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
+include_directories(src)
 include_directories(test-unit)
 
 #the first word is the name of the executble
