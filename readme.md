@@ -18,6 +18,11 @@ As a side-effect of pulling catch2 in as a Git repository, CLion will think your
 
 I find it easiest to click the "Version control" tab and then "Share Project On" to have pushes to my Github automatically set up, but feel free to do whatever is most comfortable for you.
 
+# Part 1.5 (Optional, but helpful): Update CLion
+Older versions of CLion can have issues with newer versions of Catch2. Updating now might save you some headache later. If you installed CLion recently or you know you're already up to date, you can skip this part. 
+
+If you end up running into esoteric issues, this should be the first thing that you try. Other potential issues are described in the FAQ at the bottom of the document.
+
 # Part 2: Setting up cmake
 This is mostly the same as from the video tutorial on each programming quiz (if you&rsquo;re using clion): navigate to test.cpp, click create a CMakeLists.txt, and accept the options to get a default file. From there, you need to add a couple lines to first pull in catch2 as a dependency and then link it to your compiled Tests executable. It&rsquo;s easier to show than to tell, so I&rsquo;ve attached a commented [CMakeLists.txt](./CMakeLists.txt) to explain.
 
